@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070403">
+<title>Sadie Sink</title>
+<style>
+:root{--c:#F08A3C;--a:#FFA05C;--l:#FFC08F;--bg:#070403;--tx:#f8f0e8;--mut:#b09a88;--ok:#34d399;--warn:#fbbf24;--bad:#fb7185}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--tx);font-family:'Segoe UI',Roboto,Arial,sans-serif}
+body{background:radial-gradient(900px 500px at 50% -10%,rgba(240,138,60,.16),transparent 60%),radial-gradient(600px 400px at 100% 100%,rgba(255,90,40,.08),transparent 60%),#070403}
+#app{height:100%;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top);position:relative}
+#app::before{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.018) 0 1px,transparent 1px 3px);z-index:0}
+button{font:inherit;color:inherit;cursor:pointer}
+.hd{position:relative;z-index:2;display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid rgba(240,138,60,.25);background:rgba(10,5,3,.85)}
+.logo{display:flex;align-items:center;gap:10px}
+.logo b{display:block;font-size:17px;letter-spacing:5px;font-weight:600}
+.logo small{white-space:nowrap;display:block;font-size:8px;letter-spacing:2.2px;color:var(--a);margin-top:2px}
+.sp{flex:1}
+.pill{white-space:nowrap;display:flex;align-items:center;gap:6px;border:1px solid rgba(240,138,60,.4);border-radius:14px;padding:6px 10px;font-size:9.5px;letter-spacing:1.5px;background:rgba(240,138,60,.08)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:pu 2s infinite}
+.dot.off{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+@keyframes pu{50%{opacity:.4}}
+.gear{width:36px;height:36px;border-radius:10px;border:1px solid rgba(240,138,60,.4);background:rgba(240,138,60,.08);font-size:17px;display:grid;place-items:center;padding:0}
+#view{position:relative;z-index:1;flex:1;min-height:0;display:flex;flex-direction:column;animation:in .25s ease}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.scroll{flex:1;overflow-y:auto;padding:12px 12px 44px}
+.pn{position:relative;border:1px solid rgba(240,138,60,.28);border-radius:14px;background:linear-gradient(160deg,rgba(255,140,60,.08),rgba(18,9,5,.78));padding:12px;margin-bottom:12px;overflow:hidden;box-shadow:0 0 18px rgba(240,138,60,.06) inset}
+.pn::before,.pn::after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--c);pointer-events:none}
+.pn::before{top:0;left:0;border-right:0;border-bottom:0;border-radius:14px 0 0 0}
+.pn::after{bottom:0;right:0;border-left:0;border-top:0;border-radius:0 0 14px 0}
+.ph{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:10.5px;letter-spacing:2.5px;color:var(--a);font-weight:600}
+.ph em{font-style:normal;font-size:9.5px;letter-spacing:1px;color:var(--mut);font-weight:400}
+.hero{text-align:center;padding:4px 0 2px}
+.orb{display:block;margin:0 auto;width:min(78vw,300px);height:auto;filter:drop-shadow(0 0 24px rgba(240,138,60,.45))}
+.hero h1{margin:-6px 0 2px;font-size:30px;letter-spacing:12px;font-weight:300;color:#ffe3cf;text-shadow:0 0 18px rgba(240,138,60,.8)}
+.hero .v{font-size:10px;letter-spacing:5px;color:var(--a)}
+.clk{margin-top:10px;font-size:26px;letter-spacing:3px;font-weight:600;color:#ffd9bd;text-shadow:0 0 14px rgba(240,138,60,.6)}
+.dt{font-size:11px;letter-spacing:2px;color:var(--mut);margin-top:2px}
+.hi{margin-top:8px;font-size:15px;color:var(--tx)}
+.ov{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ovi{display:flex;align-items:center;gap:10px;border:1px solid rgba(240,138,60,.2);border-radius:10px;padding:9px 10px;background:rgba(0,0,0,.25)}
+.ovi i{font-style:normal;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:rgba(240,138,60,.14);font-size:15px;flex:none}
+.ovi b{display:block;font-size:12.5px;font-weight:600}
+.ovi small{display:block;font-size:10.5px;margin-top:1px}
+.s-ok{color:var(--ok)}.s-warn{color:var(--warn)}.s-bad{color:var(--bad)}.s-mut{color:var(--mut)}
+.ag{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.agc{text-align:left;border:1px solid rgba(240,138,60,.22);border-radius:10px;padding:10px;background:rgba(0,0,0,.28);position:relative}
+.agc.on{border-color:var(--c);box-shadow:0 0 14px rgba(240,138,60,.3)}
+.agc .t{display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600}
+.agc .t i{font-style:normal;font-size:17px}
+.agc small{display:flex;align-items:center;gap:5px;font-size:10px;margin:5px 0 7px;color:var(--mut)}
+.agc small u{width:6px;height:6px;border-radius:50%;background:var(--mut);text-decoration:none}
+.agc.on small u{background:var(--ok);box-shadow:0 0 6px var(--ok)}
+.agc.on small{color:var(--ok)}
+.wv{display:flex;align-items:center;gap:2px;height:20px}
+.wv i{display:block;width:3px;height:100%;border-radius:2px;background:var(--c);transform-origin:center;animation:wv 1.1s ease-in-out infinite}
+.wv.still i{animation-play-state:paused;opacity:.35;transform:scaleY(.3)}
+@keyframes wv{0%,100%{transform:scaleY(.2)}50%{transform:scaleY(1)}}
+.fd{display:flex;align-items:center;gap:10px;border:1px solid rgba(240,138,60,.18);border-radius:10px;padding:8px 10px;margin-bottom:7px;background:rgba(0,0,0,.25)}
+.fd>i{font-style:normal;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:rgba(240,138,60,.12);flex:none;font-size:15px}
+.fd .tx{flex:1;min-width:0}
+.fd b{display:block;font-size:12.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fd small{display:block;font-size:11px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tg{flex:none;font-size:8.5px;letter-spacing:1px;font-weight:700;border-radius:6px;padding:3px 6px;border:1px solid}
+.tg.INFO{color:#7dd3fc;border-color:#7dd3fc55}.tg.WARN{color:var(--warn);border-color:#fbbf2466}.tg.TIP{color:var(--ok);border-color:#34d39966}.tg.LIVE{color:var(--a);border-color:#ffa05c66}
+.tl{position:relative;padding-left:16px}
+.tl::before{content:"";position:absolute;left:4px;top:6px;bottom:6px;width:1px;background:rgba(240,138,60,.35)}
+.tli{position:relative;display:flex;justify-content:space-between;gap:8px;padding:7px 0;font-size:12.5px}
+.tli::before{content:"";position:absolute;left:-15px;top:12px;width:7px;height:7px;border-radius:50%;background:var(--c);box-shadow:0 0 8px var(--c)}
+.tli.done::before{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.tli small{display:block;color:var(--mut);font-size:10.5px}
+.tli em{font-style:normal;font-size:11px;color:var(--a);white-space:nowrap}
+.qc{display:flex;align-items:center;gap:10px;width:100%;text-align:left;border:1px solid rgba(240,138,60,.22);border-radius:10px;padding:11px 12px;margin-bottom:7px;background:rgba(0,0,0,.28);font-size:13px}
+.qc i{font-style:normal;font-size:15px}
+.qc:active,.agc:active,.pill2:active,.cc button:active{transform:scale(.97);border-color:var(--c)}
+.rings{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;text-align:center}
+.rings svg{width:78px;height:78px}
+.rings small{display:block;font-size:10px;letter-spacing:1.5px;color:var(--mut);margin-top:3px}
+.mm{display:grid;grid-template-columns:1.5fr 1fr;gap:10px;align-items:center}
+.mm .st div{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(240,138,60,.14)}
+.mm .st b{color:var(--a)}
+.lm{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pills{display:flex;gap:8px;overflow-x:auto;padding:9px 12px;border-bottom:1px solid rgba(240,138,60,.2);flex:none;background:rgba(10,5,3,.6)}
+.pill2{flex:none;background:rgba(0,0,0,.3);border:1px solid rgba(240,138,60,.22);border-radius:18px;padding:6px 12px;font-size:12.5px;color:var(--mut)}
+.pill2.on{border-color:var(--c);color:var(--tx);background:rgba(240,138,60,.16);box-shadow:0 0 10px rgba(240,138,60,.3)}
+.vb{flex:none;display:flex;align-items:center;gap:10px;padding:6px 14px;border-bottom:1px solid rgba(240,138,60,.14);font-size:11px;letter-spacing:2px;color:var(--mut)}
+.vb .wv{flex:1;max-width:160px}
+.vb.live{color:var(--a)}
+.msgs{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:13px}
+.row{display:flex;gap:9px;align-items:flex-end}
+.row.u{flex-direction:row-reverse}
+.av{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:14px}
+.av.k{background:var(--c);box-shadow:0 0 14px rgba(240,138,60,.5)}
+.av.me{background:#2c2724;font-size:11px}
+.bub{max-width:82%;padding:11px 13px;border-radius:16px;font-size:15px;line-height:1.5;word-wrap:break-word}
+.row.k .bub{background:rgba(24,13,8,.9);border:1px solid rgba(240,138,60,.28);border-bottom-left-radius:5px}
+.row.u .bub{background:rgba(240,138,60,.14);border:1px solid var(--c);border-bottom-right-radius:5px}
+.bub.err{border-color:#7f2a2a!important;color:#ffb3b3}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:8px;font-size:12px;color:var(--mut)}
+.meta button{background:none;border:0;color:var(--a);font-size:12px;padding:2px 0}
+.web{color:#7dd3a0}
+.dots span{display:inline-block;width:7px;height:7px;margin:0 2px;border-radius:50%;background:var(--a);animation:b 1s infinite}
+.dots span:nth-child(2){animation-delay:.15s}.dots span:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,80%,100%{opacity:.2}40%{opacity:1}}
+.chero{text-align:center;padding:10px 0 4px}
+.chero h2{margin:4px 0 2px;font-size:20px;letter-spacing:6px;font-weight:400}
+.chero p{margin:0 0 12px;font-size:10px;letter-spacing:3px;color:var(--a)}
+.chips{display:flex;flex-direction:column;gap:9px}
+.chip{background:rgba(0,0,0,.3);border:1px solid rgba(240,138,60,.22);border-radius:12px;padding:12px 13px;text-align:left;font-size:14px}
+.cc{display:flex;gap:8px;overflow-x:auto;padding:7px 12px 2px;flex:none}
+.cc button{flex:none;background:rgba(0,0,0,.3);border:1px solid rgba(240,138,60,.22);border-radius:15px;padding:6px 12px;font-size:12.5px;color:var(--l)}
+.inbar{display:flex;gap:8px;padding:9px 12px;border-top:1px solid rgba(240,138,60,.2);background:rgba(10,5,3,.85);flex:none;align-items:center}
+.inbar textarea{flex:1;resize:none;height:44px;background:rgba(0,0,0,.35);border:1px solid rgba(240,138,60,.25);border-radius:22px;color:var(--tx);padding:11px 15px;font:inherit;font-size:15px;outline:none}
+.inbar textarea:focus{border-color:var(--c)}
+.rb{width:44px;height:44px;flex:none;border-radius:50%;display:grid;place-items:center;border:1px solid var(--c);background:rgba(240,138,60,.1);font-size:18px;padding:0}
+.rb.go{background:var(--c);border:0;box-shadow:0 0 16px rgba(240,138,60,.45)}
+.rb.go svg{width:21px;height:21px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rb.live{animation:pu 1s infinite;background:rgba(240,138,60,.35)}
+.gr{margin:4px 0 2px;font-size:26px;font-weight:600}
+.gr span{color:var(--a)}
+.sub{margin:0 0 14px;color:var(--mut);font-size:14px}
+.prompt{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.3);border:1px solid rgba(240,138,60,.22);border-radius:16px;padding:8px 8px 8px 14px;margin-bottom:12px}
+.prompt input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--tx);font:inherit;font-size:15px;padding:7px 0}
+.ch{margin:0 0 4px;font-size:16px;line-height:1.45}
+.trait{margin:7px 0;font-size:14.5px}.trait span{color:var(--mut)}
+.line{display:flex;justify-content:space-between;padding:12px 2px;border-bottom:1px solid rgba(240,138,60,.14);font-size:15px}
+.line em{font-style:normal;color:var(--mut)}.line em.ok{color:var(--ok)}.line em.no{color:var(--warn)}
+label{display:block;font-size:10.5px;letter-spacing:2px;color:var(--mut);margin:14px 0 6px}
+input.k,select.k,textarea.k{width:100%;background:rgba(0,0,0,.35);border:1px solid rgba(240,138,60,.25);border-radius:11px;color:var(--tx);padding:12px;font:inherit;font-size:15px;outline:none}
+textarea.k{min-height:84px;resize:vertical}
+input.k:focus,select.k:focus,textarea.k:focus{border-color:var(--c)}
+select.k option{background:#17100b}
+.btn{background:none;border:1px solid var(--c);color:var(--l);border-radius:9px;padding:9px 13px;font-size:12.5px;letter-spacing:1px;margin:9px 8px 0 0}
+.btn.on{background:var(--c);color:#fff}
+.btn.red{border-color:#7f2a2a;color:#ffb3b3}
+.hint{font-size:12.5px;line-height:1.5;color:var(--mut);margin:7px 0 0}
+.empty{text-align:center;color:var(--mut);padding:20px 8px;font-size:14px;line-height:1.5}
+.idea{border:1px solid rgba(240,138,60,.2);border-left:3px solid var(--c);border-radius:10px;padding:11px 12px;margin-bottom:9px;font-size:14.5px;line-height:1.5;background:rgba(0,0,0,.25)}
+.goal{border:1px solid rgba(240,138,60,.2);border-left:3px solid var(--c);border-radius:10px;padding:12px;margin-bottom:10px;background:rgba(0,0,0,.25)}
+.goal b{font-size:15px}.goal small{display:block;color:var(--mut);margin:3px 0 9px;font-size:12px}
+.bar2{height:6px;border-radius:3px;background:#2e1d10;overflow:hidden}
+.bar2 i{display:block;height:100%;background:linear-gradient(90deg,var(--c),var(--l));border-radius:3px}
+input[type=range]{width:100%;accent-color:var(--c);margin:8px 0 0}
+.qg{display:flex;flex-wrap:wrap;gap:7px}
+.qg button{background:rgba(0,0,0,.3);border:1px solid rgba(240,138,60,.22);border-radius:14px;padding:7px 11px;font-size:12.5px;color:var(--l)}
+nav{position:relative;z-index:2;display:flex;align-items:flex-end;border-top:1px solid rgba(240,138,60,.25);background:rgba(10,5,3,.92);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;border:0;padding:9px 0 8px;color:var(--mut);font-size:10.5px;display:flex;flex-direction:column;align-items:center;gap:4px}
+nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:var(--a)}
+nav button.talk{flex:none;width:66px;height:66px;margin:-22px 6px 6px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffb27a,#F08A3C 55%,#b9531a);border:2px solid rgba(255,224,200,.6);box-shadow:0 0 26px rgba(240,138,60,.65);justify-content:center;color:#fff;padding:0}
+nav button.talk svg{width:28px;height:28px}
+nav button.talk.live{animation:pu 1s infinite}
+#toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(20px);background:#2b1809;border:1px solid var(--c);color:var(--tx);padding:10px 16px;border-radius:20px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9;max-width:90%;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<div id="app">
+ <div class="hd" id="hd"></div>
+ <div id="view"></div>
+ <nav id="nav"></nav>
+</div>
+<div id="toast"></div>
+<script>
+var DEFMODEL="gemini-3.8-flash",VERSION="3.0.0";
+var MODELS=[
+ ["gemini-3.8-flash","Gemini 3.8 Flash · el más nuevo (recomendado)"],
+ ["gemini-3.5-flash-lite","Gemini 3.5 Flash-Lite · más liviano"],
+ ["gemini-3.1-flash-lite","Gemini 3.1 Flash-Lite"],
+ ["gemini-flash-latest","Automático · siempre el último Flash"]
+];
+var DEFLIKES="los autos, las motos, los videojuegos, el fútbol (hincha del Real Madrid y del PSG), la actriz Sadie Sink y proyectarse (metas y planes a futuro).";
+var BASE="Eres Sadie Sink, una IA (nunca dices ser humana, y no eres la actriz real: solo llevas ese nombre). Tu personalidad: serena, cálida y humilde. Escuchas más de lo que hablas: haces preguntas tranquilas y no llenas el silencio. Das respuestas claras sin presumir. Respetas la privacidad y los límites de la persona. Eres constante y leal, y afrontas los retos con calma y valentía, animando a la persona a dar pasos pequeños fuera de su zona de confort. Tu tono es suave y amable, y directa cuando hace falta. No eres terapeuta ni reemplazas ayuda profesional; si la persona habla de hacerse daño o está en una crisis grave, respondes con calidez, la animas a hablar ya con alguien de confianza o con servicios de ayuda de su país, y te quedas con ella.";
+var RULES="Reglas: nunca inventes datos, cifras, resultados ni noticias; si no estás segura, dilo. Para resultados deportivos, noticias, precios o cosas actuales usa la búsqueda cuando esté disponible. Sobre personas reales comparte solo información pública y positiva, sin especular sobre su vida privada. Responde siempre en el idioma de la persona (español por defecto), con mensajes breves y fáciles de leer en un celular, salvo que pidan más detalle.";
+var MODES={
+ gen:{e:"💬",n:"General",ag:"Núcleo",p:"",c:["¿Qué hay de nuevo hoy?","Cuéntame algo interesante","Ayúdame con una decisión","Quiero charlar un rato"]},
+ autos:{e:"🚗",n:"Autos",ag:"Agente Autos",p:"MODO AUTOS: eres una experta apasionada en autos (deportivos, tuning, historia, comparativas, mecánica básica, F1 y rally). Das datos concretos y, si no estás segura de una cifra o precio actual, lo dices o lo buscas.",c:["Ayúdame a elegir mi auto soñado","Compara dos autos","Noticias de autos y F1","¿Cómo funciona un motor turbo?"]},
+ motos:{e:"🏍️",n:"Motos",ag:"Agente Motos",p:"MODO MOTOS: eres una experta apasionada en motos (deportivas, naked, trail, MotoGP, mecánica básica, equipo y seguridad). Das datos concretos y siempre recuerdas la seguridad al manejar sin sermonear.",c:["Ayúdame a elegir mi moto ideal","Compara dos motos","Consejos de seguridad al manejar","Noticias de MotoGP"]},
+ juegos:{e:"🎮",n:"Juegos",ag:"Agente Juegos",p:"MODO VIDEOJUEGOS: eres una experta en videojuegos (PC, consolas, móvil, juegos de carreras, shooters, aventuras). Recomiendas con criterio, das guías y consejos para mejorar, y comentas novedades de la industria.",c:["Recomiéndame un juego","Noticias de videojuegos","Los mejores juegos de autos","Ayúdame a mejorar en un juego"]},
+ futbol:{e:"⚽",n:"Fútbol",ag:"Agente Fútbol",p:"MODO FÚTBOL: eres una experta en fútbol y sabes que a la persona le gustan el Real Madrid y el PSG. Para resultados, tablas, próximos partidos, fichajes y noticias usa siempre la búsqueda y di la fecha de los datos. Eres entusiasta pero respetuosa con los demás equipos y aficiones.",c:["Resultados del Real Madrid","Resultados del PSG","Próximos partidos de hoy","Noticias de fichajes"]},
+ sadie:{e:"⭐",n:"Sadie",ag:"Agente Sadie",p:"MODO FAN DE LA ACTRIZ: conversas sobre la actriz Sadie Sink (su carrera, series y películas, premios y curiosidades públicas) hablando de ella en tercera persona; tú eres una IA con ese nombre, no ella. Usa la búsqueda para datos y noticias, no inventes nada y no hables de su vida privada.",c:["Películas y series de Sadie Sink","Curiosidades de su carrera","Noticias de Sadie Sink","¿Qué me recomiendas ver de ella?"]},
+ proy:{e:"🚀",n:"Proyección",ag:"Agente Proyección",p:"MODO PROYECCIÓN: ayudas a la persona a visualizarse y planear su futuro: metas claras, pasos por etapas, hábitos, ahorro (por ejemplo para un auto o una moto), estudios y carrera. Pides el contexto que falte con UNA pregunta, entregas planes realistas y accionables, y terminas con el siguiente paso para hoy.",c:["Armemos mi plan a 1 año","¿Cómo me veo en 5 años?","Ahorrar para mi primer auto o moto","Hábitos para lograr mis metas"]},
+ calma:{e:"🌙",n:"Calma",ag:"Agente Calma",p:"MODO CALMA: acompañas con mucha serenidad. Validas lo que siente la persona, propones respiraciones o pausas simples y hablas despacio y con ternura.",c:["Necesito calmarme","Un ejercicio de respiración","Solo quiero que me escuches","Ayúdame a dormir mejor"]},
+ estudio:{e:"📚",n:"Estudio",ag:"Agente Estudio",p:"MODO ESTUDIO: explicas con claridad y ejemplos simples, haces resúmenes, planes de estudio y preguntas de repaso, y adaptas el nivel a la persona.",c:["Explícame algo fácil","Hazme un resumen","Un plan de estudio","Pregúntame para repasar"]}
+};
+var AGENTS=["autos","motos","juegos","futbol","sadie","proy","calma","estudio"];
+var QCMDS=[["futbol","⚽","Resultados del Real Madrid"],["futbol","⚽","Resultados del PSG"],["autos","🚗","Noticias de autos y F1"],["juegos","🎮","Recomiéndame un juego"],["proy","🚀","Armemos mi plan a 1 año"],["calma","🌙","Necesito calmarme un poco"]];
+var CH=["Dile algo amable a alguien hoy.","Haz algo que te dé un poquito de nervios.","Apaga el celular 30 minutos y respira.","Escribe 3 cosas que te salieron bien esta semana.","Camina 10 minutos sin audífonos.","Di \"no\" a algo que no quieras hacer.","Aprende una cosa nueva hoy.","Agradece a alguien en persona.","Termina una tarea que venías posponiendo.","Pide ayuda con algo pequeño.","Prueba algo que nunca hayas probado.","Ordena un rincón de tu cuarto.","Escribe una carta que no vas a enviar.","Haz algo solo por diversión.","Comparte una opinión honesta, con calma."];
+var QGOALS=["Mi primer auto","Mi moto soñada","Ir a un partido del Real Madrid","Ir a un partido del PSG","Ahorrar para algo grande"];
+var LV=[["Tenue",0],["Cálido",3],["Radiante",10],["Estelar",25]];
+var tab="home",pending=false,err="",listening=false,speaking=false;
+
+function $(s){return document.querySelector(s)}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/\n/g,"<br>")}
+function S(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}}
+function SET(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function hhmm(t){return new Date(t).toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit"})}
+function dkey(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function uid(){return Date.now()+"_"+Math.floor(Math.random()*1e4)}
+function rng(seed){var s=seed>>>0;return function(){s=(s*1664525+1013904223)>>>0;return s/4294967296}}
+function toast(m){var t=$("#toast");t.textContent=m;t.className="show";clearTimeout(toast.id);toast.id=setTimeout(function(){t.className=""},1900)}
+function copy(txt){
+ try{navigator.clipboard.writeText(txt).then(function(){toast("Copiado")},function(){fb()})}catch(e){fb()}
+ function fb(){var a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");toast("Copiado")}catch(e){}a.remove()}
+}
+function hasTTS(){return !!(window.speechSynthesis&&window.SpeechSynthesisUtterance)}
+function speak(txt){
+ try{if(!hasTTS()){toast("Tu teléfono no tiene voz");return}
+  var ss=window.speechSynthesis;
+  if(ss.speaking){ss.cancel();speaking=false;voice();return}
+  var u=new SpeechSynthesisUtterance(txt.replace(/[#*_`]/g,""));u.lang="es-ES";
+  u.onstart=function(){speaking=true;voice()};u.onend=u.onerror=function(){speaking=false;voice()};
+  ss.speak(u)}
+ catch(e){toast("No se pudo leer en voz alta")}
+}
+function srClass(){return window.SpeechRecognition||window.webkitSpeechRecognition}
+function listen(){
+ go("chat");
+ var SR=srClass();
+ if(!SR){toast("Dicta con el 🎤 de tu teclado");setTimeout(function(){var i=$("#in");if(i&&i.focus)i.focus()},200);return}
+ try{var r=new SR();r.lang="es-ES";r.interimResults=false;listening=true;voice();
+  r.onresult=function(e){var t=e.results[0][0].transcript;listening=false;voice();send(t)};
+  r.onerror=function(){listening=false;voice();toast("No te escuché. Prueba con el 🎤 del teclado")};
+  r.onend=function(){listening=false;voice()};r.start()}
+ catch(e){listening=false;voice();toast("Dicta con el 🎤 de tu teclado")}
+}
+function mark(){var d=S("days",[]),t=dkey(new Date());if(d.indexOf(t)<0){d.push(t);SET("days",d.slice(-400))}}
+function streak(){var d=S("days",[]),n=0,x=new Date();
+ function has(z){return d.indexOf(dkey(z))>=0}
+ if(!has(x))x.setDate(x.getDate()-1);
+ while(has(x)){n++;x.setDate(x.getDate()-1)}return n}
+function cIdx(){return Math.floor((Date.now()-new Date().getTimezoneOffset()*6e4)/864e5)%CH.length}
+function cDone(){return !!S("cdone",{})[dkey(new Date())]}
+function cN(){return S("cN",0)}
+function level(n){var i=0;for(var k=0;k<LV.length;k++)if(n>=LV[k][1])i=k;var nx=LV[i+1];
+ return{name:LV[i][0],next:nx?nx[0]:"",pct:nx?Math.round((n-LV[i][1])/(nx[1]-LV[i][1])*100):100,left:nx?nx[1]-n:0}}
+function greet(){var h=new Date().getHours();return h<12?"Buenos días":h<19?"Buenas tardes":"Buenas noches"}
+function goals(){return S("goals",[])}
+function addGoal(t,d){var g=goals();g.unshift({id:uid(),title:t,date:d||"",prog:0,t:Date.now()});SET("goals",g)}
+function daysTo(d){return Math.ceil((new Date(d+"T00:00:00")-new Date())/864e5)}
+function daysLeft(d){if(!d)return"";var n=daysTo(d);return n>0?"Faltan "+n+" días · "+d:n===0?"Es hoy · "+d:"Venció hace "+(-n)+" días · "+d}
+function curModel(){return S("model","")||DEFMODEL}
+function sysPrompt(){
+ var md=MODES[S("mode","gen")]||MODES.gen,nm=S("uname","");
+ return BASE+" Datos de la persona con la que hablas"+(nm?" (se llama "+nm+")":"")+": le gustan "+(S("likes","")||DEFLIKES)+" Úsalos para personalizar tus respuestas sin forzarlos. Hoy es "+new Date().toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long",year:"numeric"})+". "+(md.p?md.p+" ":"")+RULES}
+
+/* ---------- gráficos ---------- */
+function emblem(s){
+ var c="#F08A3C",l="#FFC08F",t="#FFEFE2";
+ return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 140 140" aria-hidden="true" style="flex:none">'+
+ '<circle cx="70" cy="70" r="62" fill="'+c+'" fill-opacity=".1"/>'+
+ '<circle cx="70" cy="70" r="58" fill="none" stroke="'+c+'" stroke-opacity=".4" stroke-width=".8"/>'+
+ '<circle cx="70" cy="70" r="52" fill="none" stroke="'+c+'" stroke-opacity=".65" stroke-width=".8"/>'+
+ '<circle cx="70" cy="70" r="42" fill="none" stroke="'+c+'" stroke-opacity=".85" stroke-width="7" stroke-dasharray="1.2 2.1"/>'+
+ '<circle cx="70" cy="70" r="32" fill="none" stroke="'+c+'" stroke-opacity=".85" stroke-width="1"/>'+
+ '<circle cx="70" cy="70" r="48" fill="none" stroke="'+c+'" stroke-width="3" stroke-dasharray="75 227"><animateTransform attributeName="transform" type="rotate" from="-160 70 70" to="200 70 70" dur="12s" repeatCount="indefinite"/></circle>'+
+ '<circle cx="70" cy="70" r="48" fill="none" stroke="'+l+'" stroke-width="3" stroke-dasharray="40 262"><animateTransform attributeName="transform" type="rotate" from="100 70 70" to="-260 70 70" dur="18s" repeatCount="indefinite"/></circle>'+
+ '<circle cx="70" cy="70" r="16" fill="'+c+'" fill-opacity=".3"/>'+
+ '<path d="M70 50L76 64L90 70L76 76L70 90L64 76L50 70L64 64Z" fill="'+t+'"/></svg>'}
+
+function orb(){
+ var r=rng(7),p="",i,k;
+ for(i=0;i<46;i++){var a=r()*6.283,d=30+r()*118;
+  p+='<circle cx="'+(150+Math.cos(a)*d).toFixed(1)+'" cy="'+(150+Math.sin(a)*d*0.92).toFixed(1)+'" r="'+(0.6+r()*1.5).toFixed(1)+'" fill="#FFC08F"><animate attributeName="opacity" values=".1;1;.1" dur="'+(2+r()*3).toFixed(1)+'s" begin="-'+(r()*3).toFixed(1)+'s" repeatCount="indefinite"/></circle>'}
+ var mer="";
+ for(i=0;i<5;i++)mer+='<ellipse cx="150" cy="150" rx="100" ry="100" fill="none" stroke="#F08A3C" stroke-opacity=".45" stroke-width=".8"><animate attributeName="rx" values="100;71;0;71;100;71;0;71;100" dur="14s" begin="-'+(i*2.8).toFixed(1)+'s" repeatCount="indefinite"/></ellipse>';
+ var lat="",la=[-60,-30,0,30,60];
+ la.forEach(function(g){var rd=g*Math.PI/180,rx=100*Math.cos(rd),y=150+100*Math.sin(rd);
+  lat+='<ellipse cx="150" cy="'+y.toFixed(1)+'" rx="'+rx.toFixed(1)+'" ry="'+(rx*0.16).toFixed(1)+'" fill="none" stroke="#F08A3C" stroke-opacity=".35" stroke-width=".7"/>'});
+ return '<svg class="orb" viewBox="0 0 300 300" aria-hidden="true"><defs>'+
+ '<radialGradient id="gs" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#FFB27A" stop-opacity=".38"/><stop offset=".6" stop-color="#F08A3C" stop-opacity=".12"/><stop offset="1" stop-color="#F08A3C" stop-opacity=".02"/></radialGradient>'+
+ '<radialGradient id="gc" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#FFE3CF"/><stop offset=".4" stop-color="#FFA05C" stop-opacity=".6"/><stop offset="1" stop-color="#F08A3C" stop-opacity="0"/></radialGradient></defs>'+
+ '<circle cx="150" cy="150" r="100" fill="url(#gs)" stroke="#FFA05C" stroke-opacity=".7" stroke-width="1"/>'+mer+lat+p+
+ '<g transform="rotate(-22 150 150)"><ellipse cx="150" cy="150" rx="138" ry="38" fill="none" stroke="#FFA05C" stroke-opacity=".6" stroke-width=".9"/><circle r="4" fill="#FFE3CF"><animateMotion dur="9s" repeatCount="indefinite" path="M288 150A138 38 0 1 1 12 150A138 38 0 1 1 288 150"/></circle></g>'+
+ '<g transform="rotate(30 150 150)"><ellipse cx="150" cy="150" rx="128" ry="30" fill="none" stroke="#FFC08F" stroke-opacity=".45" stroke-width=".8" stroke-dasharray="3 4"/><circle r="3.2" fill="#FFA05C"><animateMotion dur="13s" repeatCount="indefinite" path="M278 150A128 30 0 1 0 22 150A128 30 0 1 0 278 150"/></circle></g>'+
+ '<circle cx="150" cy="150" r="46" fill="url(#gc)"/>'+
+ '<path d="M150 118L158 142L182 150L158 158L150 182L142 158L118 150L142 142Z" fill="#FFF3E8"/></svg>'}
+
+function wave(n,on,seed){var r=rng(seed||3),h="";for(var i=0;i<n;i++)h+='<i style="animation-delay:-'+(r()*1.1).toFixed(2)+'s;animation-duration:'+(0.7+r()*0.9).toFixed(2)+'s"></i>';
+ return '<div class="wv'+(on?'':' still')+'">'+h+'</div>'}
+
+function ring(pct,val,color){
+ var c=2*Math.PI*26,d=(Math.max(0,Math.min(100,pct))/100*c).toFixed(1);
+ return '<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="26" fill="none" stroke="rgba(240,138,60,.16)" stroke-width="6"/>'+
+ '<circle cx="32" cy="32" r="26" fill="none" stroke="'+color+'" stroke-width="6" stroke-linecap="round" stroke-dasharray="'+d+' '+c.toFixed(1)+'" transform="rotate(-90 32 32)"/>'+
+ '<text x="32" y="36" text-anchor="middle" font-size="12" font-weight="600" fill="#ffe3cf">'+val+'</text></svg>'}
+
+function constellation(){
+ var mem=S("mem",[]).slice(0,14),pts=[],i;
+ var demo=mem.length===0;
+ var n=demo?8:mem.length;
+ for(i=0;i<n;i++){var rr=rng(demo?(i*911+5):(mem[i].text.length*131+i*977+13));pts.push([18+rr()*264,14+rr()*112])}
+ var ln="",dt="";
+ for(i=1;i<n;i++)ln+='<line x1="'+pts[i-1][0].toFixed(1)+'" y1="'+pts[i-1][1].toFixed(1)+'" x2="'+pts[i][0].toFixed(1)+'" y2="'+pts[i][1].toFixed(1)+'" stroke="#FFA05C" stroke-opacity="'+(demo?.18:.5)+'" stroke-width=".8"/>';
+ for(i=3;i<n;i+=3)ln+='<line x1="'+pts[i][0].toFixed(1)+'" y1="'+pts[i][1].toFixed(1)+'" x2="'+pts[i-3][0].toFixed(1)+'" y2="'+pts[i-3][1].toFixed(1)+'" stroke="#FFC08F" stroke-opacity="'+(demo?.1:.3)+'" stroke-width=".6"/>';
+ pts.forEach(function(p,j){dt+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="'+(demo?2:3.2)+'" fill="'+(demo?"#6b4a35":"#FFC08F")+'"><animate attributeName="opacity" values="1;.35;1" dur="'+(2+j%3)+'s" repeatCount="indefinite"/></circle>'});
+ return '<svg viewBox="0 0 300 140" style="width:100%;height:auto" aria-hidden="true">'+ln+dt+'</svg>'}
+
+var SENDI='<svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>';
+var MICI='<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>';
+var ICONS={
+ home:'<svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>',
+ chat:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>',
+ miss:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>',
+ mem:'<svg viewBox="0 0 24 24"><circle cx="6" cy="7" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="17" r="2"/><path d="M8 7l8-1M7 9l4 6M17 8l-4 7"/></svg>'};
+
+/* ---------- estructura ---------- */
+function header(){
+ var ok=!!S("gkey","");
+ $("#hd").innerHTML='<div class="logo">'+emblem(38)+'<div><b>SADIE</b><small>COMMAND CENTER</small></div></div><div class="sp"></div>'+
+ '<div class="pill"><i class="dot'+(ok?'':' off')+'"></i>'+(ok?'ÓPTIMO':'SIN LLAVE')+'</div>'+
+ '<button class="gear" data-act="tab" data-t="set">⚙</button>'}
+function navbar(){
+ function b(t,l){return '<button class="'+(tab===t?'on':'')+'" data-act="tab" data-t="'+t+'">'+ICONS[t]+l+'</button>'}
+ $("#nav").innerHTML=b("home","Centro")+b("chat","Chat")+'<button class="talk'+(listening?' live':'')+'" data-act="talk" aria-label="Hablar">'+MICI+'</button>'+b("miss","Misiones")+b("mem","Memoria")}
+function go(t){tab=t;header();navbar();var v=$("#view");v.style.animation="none";void v.offsetWidth;v.style.animation="";
+ ({home:home,chat:chatView,miss:missView,mem:memView,set:setView})[t]()}
+function tick(){var c=$("#clk");if(c)c.textContent=new Date().toLocaleTimeString("es",{hour:"2-digit",minute:"2-digit",second:"2-digit"})}
+
+/* ---------- CENTRO ---------- */
+function home(){
+ var key=!!S("gkey",""),web=S("web",true),mdl=S("mode","gen"),name=S("uname","")||"amigo",now=new Date();
+ var memN=S("mem",[]).length,chatN=S("chat",[]).length,gs=goals(),act=gs.filter(function(g){return g.prog<100});
+ var avg=gs.length?Math.round(gs.reduce(function(s,g){return s+g.prog},0)/gs.length):0;
+ var lv=level(cN()),st=streak();
+
+ var core=[
+  ["🧠","Núcleo",key?"Activo":"Sin llave",key?"s-ok":"s-warn"],
+  ["💾","Memoria",memN+" guardadas","s-mut"],
+  ["🎙️","Voz",hasTTS()?"Disponible":"No disponible",hasTTS()?"s-ok":"s-mut"],
+  ["🤖","Agentes",AGENTS.length+" listos","s-ok"],
+  ["⚡","Modelo",curModel().replace("gemini-",""),"s-mut"],
+  ["🌐","Internet",web?"Activado":"Apagado",web?"s-ok":"s-mut"]];
+
+ var feed=[];
+ if(!key)feed.push(["⚠️","Falta tu API key","Agrégala en Ajustes ⚙ para activar a Sadie","WARN"]);
+ feed.push(["🎯","Reto del día",CH[cIdx()],cDone()?"LIVE":"TIP"]);
+ gs.filter(function(g){return g.date&&g.prog<100}).sort(function(a,b){return a.date<b.date?-1:1}).slice(0,2).forEach(function(g){var d=daysTo(g.date);feed.push(["📌",g.title,daysLeft(g.date),d<=7?"WARN":"INFO"])});
+ if(st>0)feed.push(["🔥","Racha de "+st+(st===1?" día":" días"),"Sigue así, vas con constancia","LIVE"]);
+ var lastA=S("chat",[]).filter(function(m){return m.role==="assistant"}).pop();
+ if(lastA)feed.push(["💬","Última charla",lastA.content.replace(/[*#_]/g,"").slice(0,70),"INFO"]);
+ feed.push(["🌐","Búsqueda en internet",web?"Activa: resultados y noticias de hoy":"Apagada: actívala en Ajustes","INFO"]);
+
+ var tl=[{t:"Reto del día",s:CH[cIdx()],e:cDone()?"Hecho ✓":"Hoy",d:cDone()}];
+ gs.filter(function(g){return g.date&&g.prog<100}).sort(function(a,b){return a.date<b.date?-1:1}).slice(0,4).forEach(function(g){var d=daysTo(g.date);tl.push({t:g.title,s:g.date,e:d>0?"en "+d+" d":d===0?"hoy":"vencida",d:false})});
+
+ $("#view").innerHTML='<div class="scroll">'+
+ '<section class="pn"><div class="hero">'+orb()+'<h1>SADIE</h1><div class="v">AI CORE · v'+VERSION+'</div>'+
+ '<div class="clk" id="clk"></div><div class="dt">'+now.toLocaleDateString("es",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).toUpperCase()+'</div>'+
+ '<div class="hi">'+greet()+', <b style="color:var(--a)">'+esc(name)+'</b> 👋</div></div></section>'+
+
+ '<section class="pn"><div class="ph"><span>AI CORE · RESUMEN</span><em>'+(key?"ONLINE":"OFFLINE")+'</em></div><div class="ov">'+
+ core.map(function(c){return '<div class="ovi"><i>'+c[0]+'</i><div><b>'+c[1]+'</b><small class="'+c[3]+'">'+esc(c[2])+'</small></div></div>'}).join("")+'</div></section>'+
+
+ '<section class="pn"><div class="ph"><span>AGENTES ACTIVOS</span><em>'+AGENTS.length+' disponibles</em></div><div class="ag">'+
+ AGENTS.map(function(k,i){var on=k===mdl;return '<button class="agc'+(on?' on':'')+'" data-act="tile" data-k="'+k+'"><div class="t"><i>'+MODES[k].e+'</i>'+MODES[k].ag.replace("Agente ","")+'</div><small><u></u>'+(on?"Activo":"En espera")+'</small>'+wave(14,on,i*7+2)+'</button>'}).join("")+'</div></section>'+
+
+ '<section class="pn"><div class="ph"><span>INTELIGENCIA EN VIVO</span><em>LIVE</em></div>'+
+ feed.slice(0,6).map(function(f){return '<div class="fd"><i>'+f[0]+'</i><div class="tx"><b>'+esc(f[1])+'</b><small>'+esc(f[2])+'</small></div><span class="tg '+f[3]+'">'+f[3]+'</span></div>'}).join("")+'</section>'+
+
+ '<section class="pn"><div class="ph"><span>LÍNEA DE MISIONES</span><em data-act="tab" data-t="miss" style="cursor:pointer">VER TODO ›</em></div><div class="tl">'+
+ tl.map(function(x){return '<div class="tli'+(x.d?' done':'')+'"><div>'+esc(x.t)+'<small>'+esc(x.s)+'</small></div><em>'+x.e+'</em></div>'}).join("")+'</div></section>'+
+
+ '<section class="pn"><div class="ph"><span>COMANDOS RÁPIDOS</span></div>'+
+ QCMDS.map(function(q,i){return '<button class="qc" data-act="qcmd" data-i="'+i+'"><i>'+q[1]+'</i>'+esc(q[2])+'</button>'}).join("")+'</section>'+
+
+ '<section class="pn"><div class="ph"><span>MONITOR DE BRILLO</span><em>NIVEL '+lv.name.toUpperCase()+'</em></div><div class="rings">'+
+ '<div>'+ring(st/7*100,st+"d","#FFA05C")+'<small>RACHA</small></div>'+
+ '<div>'+ring(lv.pct,lv.pct+"%","#F08A3C")+'<small>BRILLO</small></div>'+
+ '<div>'+ring(avg,avg+"%","#FFC08F")+'<small>METAS</small></div></div></section>'+
+
+ '<section class="pn"><div class="ph"><span>MEMORIA</span><em data-act="tab" data-t="mem" style="cursor:pointer">VER MAPA ›</em></div><div class="mm"><div>'+constellation()+'</div><div class="st">'+
+ '<div>Recuerdos<b>'+memN+'</b></div><div>Mensajes<b>'+chatN+'</b></div><div>Retos<b>'+cN()+'</b></div></div></div></section>'+
+
+ '<section class="pn"><div class="ph"><span>ESTADO DE CONEXIONES</span><em>'+(key?"1 conectada":"0 conectadas")+'</em></div><div class="lm">'+
+ [["Gemini",key?"Conectado":"Sin llave",key?"s-ok":"s-warn"],["Google Search",web?"Activo":"Apagado",web?"s-ok":"s-mut"],["Voz (TTS)",hasTTS()?"Disponible":"No disponible",hasTTS()?"s-ok":"s-mut"],["Micrófono",srClass()?"Disponible":"Usa el del teclado",srClass()?"s-ok":"s-mut"]].map(function(x){return '<div class="ovi"><div><b>'+x[0]+'</b><small class="'+x[2]+'">'+x[1]+'</small></div></div>'}).join("")+
+ '</div><button class="btn" data-act="tab" data-t="set">ADMINISTRAR</button></section>'+
+ '</div>';
+ tick()}
+
+/* ---------- CHAT ---------- */
+function bubble(m,i){
+ var time=m.t?hhmm(m.t):"";
+ if(m.role==="user")return '<div class="row u"><div class="av me">Tú</div><div class="bub">'+fmt(m.content)+'<div class="meta">'+time+'</div></div></div>';
+ return '<div class="row k"><div class="av k">S</div><div class="bub">'+fmt(m.content)+'<div class="meta"><span>'+time+'</span>'+(m.web?'<span class="web">🌐 con internet</span>':'')+'<button data-act="save" data-i="'+i+'">⭐ Guardar</button><button data-act="copy" data-i="'+i+'">Copiar</button><button data-act="say" data-i="'+i+'">🔊</button></div></div></div>'}
+function voice(){
+ var vb=$("#vb");
+ if(vb){var live=listening||speaking;vb.className="vb"+(live?" live":"");
+  vb.innerHTML=(live?wave(18,true,9):"")+'<span>'+(listening?"ESCUCHANDO…":speaking?"HABLANDO…":"VOZ EN ESPERA · TOCA EL 🎙")+'</span>'}
+ var t=document.querySelector("nav .talk");if(t)t.className="talk"+(listening?" live":"")}
+function chatView(){
+ var md=S("mode","gen");
+ $("#view").innerHTML='<div class="pills">'+Object.keys(MODES).map(function(k){return '<button class="pill2'+(k===md?' on':'')+'" data-act="mode" data-k="'+k+'">'+MODES[k].e+' '+MODES[k].n+'</button>'}).join("")+'</div>'+
+ '<div class="vb" id="vb"></div>'+
+ '<div class="msgs" id="ms"></div>'+
+ '<div class="cc">'+MODES[md].c.map(function(c,i){return '<button data-act="chip" data-i="'+i+'">'+esc(c)+'</button>'}).join("")+'</div>'+
+ '<div class="inbar"><button class="rb'+(listening?' live':'')+'" data-act="talk" aria-label="Hablar">🎙</button><textarea id="in" placeholder="Escríbele a Sadie..." rows="1"></textarea><button class="rb go" id="sd" data-act="send">'+SENDI+'</button></div>';
+ voice();renderChat();var p=document.querySelector(".pill2.on");if(p&&p.scrollIntoView)p.scrollIntoView({inline:"center",block:"nearest"})}
+function renderChat(){
+ var ms=$("#ms");if(!ms)return;
+ var h=S("chat",[]),html="",md=S("mode","gen");
+ if(!h.length&&!pending){html+='<div class="chero">'+emblem(110)+'<h2>'+MODES[md].e+' '+MODES[md].n.toUpperCase()+'</h2><p>'+MODES[md].ag.toUpperCase()+' · LISTO</p></div><div class="chips">'+
+  MODES[md].c.map(function(c,i){return '<button class="chip" data-act="chip" data-i="'+i+'">'+esc(c)+'</button>'}).join("")+'</div>'}
+ h.forEach(function(m,i){html+=bubble(m,i)});
+ if(pending)html+='<div class="row k"><div class="av k">S</div><div class="bub"><span class="dots"><span></span><span></span><span></span></span></div></div>';
+ if(err)html+='<div class="row k"><div class="av k">S</div><div class="bub err">'+esc(err)+'</div></div>';
+ ms.innerHTML=html;ms.scrollTop=ms.scrollHeight}
+
+/* ---------- MISIONES ---------- */
+function missView(){
+ var gs=goals(),vis=S("vision",""),done=cDone();
+ $("#view").innerHTML='<div class="scroll"><h2 class="gr">Mis <span>misiones</span></h2><p class="sub">Visualízate. Planea. Hazlo.</p>'+
+ '<section class="pn"><div class="ph"><span>RETO DEL DÍA</span><em>'+cN()+' HECHOS</em></div><p class="ch">'+esc(CH[cIdx()])+'</p>'+
+ (done?'<p class="hint" style="color:var(--ok)">✨ Reto cumplido. Mañana hay otro.</p>':'<button class="btn on" data-act="cdo">HECHO ✨</button><button class="btn" data-act="cask">HABLAR DE ESTO</button>')+'</section>'+
+ '<section class="pn"><div class="ph"><span>MI VISIÓN</span></div><textarea class="k" id="vis" placeholder="¿Cómo te ves en 5 años? Tu auto, tu moto, tu trabajo, tu vida...">'+esc(vis)+'</textarea>'+
+ '<button class="btn" data-act="savevis">GUARDAR</button><button class="btn on" data-act="visplan">ARMAR PLAN CON SADIE</button></section>'+
+ '<section class="pn"><div class="ph"><span>NUEVA META</span></div><input class="k" id="gt" placeholder="Ej: Comprar mi primera moto" autocomplete="off"><label>FECHA (opcional)</label><input class="k" id="gd" type="date"><button class="btn on" data-act="addgoal">AGREGAR META</button>'+
+ '<label>IDEAS RÁPIDAS</label><div class="qg">'+QGOALS.map(function(q,i){return '<button data-act="qgoal" data-i="'+i+'">+ '+esc(q)+'</button>'}).join("")+'</div></section>'+
+ '<section class="pn"><div class="ph"><span>MIS METAS</span><em>'+gs.length+'</em></div>'+
+ (gs.length?gs.map(function(g){return '<div class="goal"><b>🎯 '+esc(g.title)+'</b><small>'+(daysLeft(g.date)||"Sin fecha")+'</small>'+
+  '<div class="bar2"><i id="gb_'+g.id+'" style="width:'+g.prog+'%"></i></div>'+
+  '<input class="rg" type="range" min="0" max="100" step="5" value="'+g.prog+'" data-id="'+g.id+'"><small id="gp_'+g.id+'" style="margin:4px 0 0">Avance: '+g.prog+'%</small>'+
+  '<button class="btn" data-act="goalplan" data-id="'+g.id+'">PLAN CON SADIE</button><button class="btn red" data-act="delgoal" data-id="'+g.id+'">BORRAR</button></div>'}).join(""):
+  '<div class="empty">Aún no tienes metas.<br>Agrega una arriba, ¡empieza por la que más te emocione!</div>')+'</section></div>'}
+
+/* ---------- MEMORIA ---------- */
+function addMem(txt){var m=S("mem",[]);m.unshift({text:txt,t:Date.now()});SET("mem",m)}
+function memView(){
+ var mem=S("mem",[]);
+ $("#view").innerHTML='<div class="scroll"><h2 class="gr">Mi <span>memoria</span></h2><p class="sub">Privada, solo en tu teléfono.</p>'+
+ '<section class="pn"><div class="ph"><span>MAPA DE MEMORIA</span><em>'+mem.length+' RECUERDOS</em></div>'+constellation()+
+ (mem.length?'':'<p class="hint" style="text-align:center">Cada recuerdo que guardes enciende una estrella.</p>')+'</section>'+
+ '<section class="pn"><div class="ph"><span>MI DIARIO</span></div><div class="prompt"><input id="ni" placeholder="Escribe lo que sientes hoy..." autocomplete="off"><button class="rb go" data-act="addmem">'+SENDI+'</button></div>'+
+ (mem.length?mem.map(function(x,i){return '<div class="idea">'+fmt(x.text)+'<div class="meta"><span>'+new Date(x.t).toLocaleDateString("es")+'</span><button data-act="cpmem" data-i="'+i+'">Copiar</button><button data-act="delmem" data-i="'+i+'" style="color:#ff8a8a">Borrar</button></div></div>'}).join(""):
+ '<div class="empty">Tu diario está vacío.<br>Escribe algo o toca ⭐ Guardar en una respuesta de Sadie.</div>')+'</section></div>'}
+
+/* ---------- AJUSTES ---------- */
+function setView(){
+ var ok=!!S("gkey",""),cur=curModel(),inList=MODELS.some(function(m){return m[0]===cur}),web=S("web",true),auto=S("autospeak",false);
+ $("#view").innerHTML='<div class="scroll"><h2 class="gr"><span>Ajustes</span> del sistema</h2><p class="sub">Tu llave, tu modelo, tus gustos.</p>'+
+ '<section class="pn"><div class="ph"><span>PERSONALIDAD</span></div>'+
+ '<div class="trait"><b>Serena</b> <span>— Te escucha con calma</span></div>'+
+ '<div class="trait"><b>Cálida</b> <span>— Amable y cercana</span></div>'+
+ '<div class="trait"><b>Humilde</b> <span>— Clara, sin presumir</span></div>'+
+ '<div class="trait"><b>Valiente</b> <span>— Te anima a dar pasos pequeños</span></div>'+
+ '<p class="hint">Es una IA que solo lleva ese nombre. No reemplaza ayuda profesional: si la necesitas, busca a alguien de confianza.</p></section>'+
+ '<div class="line">Versión<em>'+VERSION+'</em></div><div class="line">Estado<em class="'+(ok?'ok':'no')+'">'+(ok?'Online':'Falta API key')+'</em></div>'+
+ '<section class="pn" style="margin-top:12px"><div class="ph"><span>PERFIL</span></div>'+
+ '<label style="margin-top:0">TU NOMBRE</label><input class="k" id="un" placeholder="¿Cómo te llamo?" value="'+esc(S("uname",""))+'"><button class="btn" data-act="savename">GUARDAR NOMBRE</button>'+
+ '<label>MIS GUSTOS (Sadie los usa para personalizar)</label><textarea class="k" id="lk">'+esc(S("likes","")||DEFLIKES)+'</textarea><button class="btn" data-act="savelikes">GUARDAR GUSTOS</button></section>'+
+ '<section class="pn"><div class="ph"><span>CONEXIÓN GEMINI</span></div>'+
+ '<label style="margin-top:0">API KEY DE GEMINI (GRATIS)</label><input class="k" id="key" type="password" placeholder="AIza..." autocomplete="off" value="'+esc(S("gkey",""))+'">'+
+ '<p class="hint">Sácala gratis en aistudio.google.com/apikey. Se guarda solo en este teléfono. No la subas a GitHub ni la compartas.</p><button class="btn" data-act="savekey">GUARDAR LLAVE</button>'+
+ '<label>MODELO DE GEMINI</label><select class="k" id="msel">'+MODELS.map(function(m){return '<option value="'+m[0]+'"'+(inList&&cur===m[0]?' selected':'')+'>'+esc(m[1])+'</option>'}).join("")+'<option value="custom"'+(inList?'':' selected')+'>Otro (escribir nombre)</option></select>'+
+ '<input class="k" id="mc" placeholder="nombre-del-modelo" style="margin-top:8px;display:'+(inList?'none':'block')+'" value="'+(inList?'':esc(cur))+'">'+
+ '<p class="hint">Por defecto usa el más nuevo: '+DEFMODEL+'. Si uno falla, Sadie prueba sola con el modo automático.</p><button class="btn" data-act="savemodel">GUARDAR MODELO</button></section>'+
+ '<section class="pn"><div class="ph"><span>FUNCIONES</span></div>'+
+ '<label style="margin-top:0">BÚSQUEDA EN INTERNET</label><button class="btn'+(web?' on':'')+'" data-act="toggleweb" style="margin-top:0">'+(web?'ACTIVADA 🌐':'DESACTIVADA')+'</button>'+
+ '<p class="hint">Para resultados de fútbol, noticias y datos de hoy (Google Search gratis con límite mensual).</p>'+
+ '<label>LEER RESPUESTAS EN VOZ ALTA</label><button class="btn'+(auto?' on':'')+'" data-act="toggleauto" style="margin-top:0">'+(auto?'AUTOMÁTICO 🔊':'MANUAL (botón 🔊)')+'</button></section>'+
+ '<section class="pn"><div class="ph"><span>DATOS</span></div><button class="btn red" data-act="clearchat" style="margin-top:0">BORRAR CHAT</button><button class="btn red" data-act="clearmem">BORRAR DIARIO</button><button class="btn red" data-act="cleargoals">BORRAR METAS</button></section></div>'}
+
+/* ---------- GEMINI ---------- */
+var API="https://generativelanguage.googleapis.com/v1beta/models/";
+function ask(key,models,body,tools){
+ var b={};for(var k in body)b[k]=body[k];
+ if(tools)b.tools=[{google_search:{}}];
+ return fetch(API+encodeURIComponent(models[0])+":generateContent",{method:"POST",headers:{"content-type":"application/json","x-goog-api-key":key},body:JSON.stringify(b)})
+ .then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,j:j}})})
+ .then(function(res){
+  if(!res.ok){
+   var msg=(res.j&&res.j.error&&res.j.error.message)||"";
+   if(tools&&res.status===400&&/tool|search|ground/i.test(msg))return ask(key,models,body,false);
+   if((res.status===404||(res.status===400&&/model/i.test(msg)))&&models.length>1)return ask(key,models.slice(1),body,tools)}
+  return res})}
+
+function send(text){
+ text=(text||"").trim();
+ if(!text||pending)return;
+ var key=S("gkey","");
+ if(!key){toast("Primero agrega tu API key en Ajustes");go("set");return}
+ var model=curModel(),models=[model];
+ if(model!=="gemini-flash-latest")models.push("gemini-flash-latest");
+ var h=S("chat",[]);h.push({role:"user",content:text,t:Date.now()});SET("chat",h.slice(-60));mark();
+ err="";pending=true;go("chat");
+ var contents=[];
+ S("chat",[]).slice(-20).forEach(function(m){
+  var r=m.role==="assistant"?"model":"user",last=contents[contents.length-1];
+  if(last&&last.role===r)last.parts[0].text+="\n"+m.content;
+  else contents.push({role:r,parts:[{text:m.content}]})});
+ var body={systemInstruction:{parts:[{text:sysPrompt()}]},contents:contents,generationConfig:{maxOutputTokens:4096}};
+ ask(key,models,body,S("web",true)).then(function(res){
+  if(!res.ok){var em=(res.j&&res.j.error&&res.j.error.message)||("Error "+res.status);
+   if(res.status===429)em="Llegaste al límite gratis por ahora. Espera un minuto e inténtalo otra vez.";
+   else if(res.status===400&&/API key/i.test(em))em="La API key no es válida. Revísala en Ajustes.";
+   else if(res.status===404)em="No encontré ese modelo. En Ajustes elige \""+DEFMODEL+"\" o el modo automático.";
+   err=em}
+  else{
+   var c=res.j.candidates&&res.j.candidates[0],parts=(c&&c.content&&c.content.parts)||[];
+   var out=parts.filter(function(b){return !b.thought}).map(function(b){return b.text||""}).join("").trim();
+   var gm=c&&c.groundingMetadata,web=!!(gm&&((gm.groundingChunks&&gm.groundingChunks.length)||(gm.webSearchQueries&&gm.webSearchQueries.length)));
+   if(!out){err="Gemini no pudo responder eso. Prueba escribirlo de otra forma."}
+   else{var h2=S("chat",[]);h2.push({role:"assistant",content:out,t:Date.now(),web:web});SET("chat",h2.slice(-60));if(S("autospeak",false))speak(out)}}})
+ .catch(function(){err="No hay conexión. Revisa tu internet e inténtalo otra vez."})
+ .then(function(){pending=false;if(tab==="chat")renderChat()})}
+
+function setMode(k){SET("mode",k)}
+
+/* ---------- EVENTOS ---------- */
+document.addEventListener("click",function(e){
+ var b=e.target.closest("[data-act]");if(!b)return;
+ var a=b.getAttribute("data-act"),i=+b.getAttribute("data-i"),id=b.getAttribute("data-id"),k=b.getAttribute("data-k");
+ var md=S("mode","gen");
+ if(a==="tab")go(b.getAttribute("data-t"));
+ else if(a==="tile"){setMode(k);go("chat")}
+ else if(a==="qcmd"){setMode(QCMDS[i][0]);send(QCMDS[i][2])}
+ else if(a==="mode"){setMode(k);chatView()}
+ else if(a==="chip")send(MODES[md].c[i]);
+ else if(a==="talk")listen();
+ else if(a==="send"){var t=$("#in");if(t&&t.value.trim()){var x=t.value;t.value="";send(x)}}
+ else if(a==="cdo"){if(!cDone()){var cd=S("cdone",{});cd[dkey(new Date())]=true;SET("cdone",cd);SET("cN",cN()+1);mark();missView();toast("Reto cumplido ⭐")}}
+ else if(a==="cask"){setMode("gen");send("Mi reto de hoy es: "+CH[cIdx()]+" Ayúdame a afrontarlo con calma.")}
+ else if(a==="save"){var m=S("chat",[])[i];if(m){addMem(m.content);toast("Guardado en tu memoria ⭐")}}
+ else if(a==="copy"){var m2=S("chat",[])[i];if(m2)copy(m2.content)}
+ else if(a==="say"){var m3=S("chat",[])[i];if(m3)speak(m3.content)}
+ else if(a==="addmem"){var n=$("#ni").value.trim();if(n){addMem(n);memView()}}
+ else if(a==="cpmem")copy(S("mem",[])[i].text);
+ else if(a==="delmem"){var l=S("mem",[]);l.splice(i,1);SET("mem",l);memView()}
+ else if(a==="savevis"){SET("vision",$("#vis").value.trim());toast("Visión guardada")}
+ else if(a==="visplan"){var vv=$("#vis").value.trim();if(!vv){toast("Escribe tu visión primero");return}SET("vision",vv);setMode("proy");send("Esta es mi visión de cómo quiero verme en el futuro: "+vv+" Ayúdame a convertirla en un plan realista por etapas, con el primer paso para hoy.")}
+ else if(a==="addgoal"){var gt=$("#gt").value.trim();if(gt){addGoal(gt,$("#gd").value);missView();toast("Meta agregada 🎯")}else toast("Escribe tu meta")}
+ else if(a==="qgoal"){addGoal(QGOALS[i],"");missView();toast("Meta agregada 🎯")}
+ else if(a==="delgoal"){SET("goals",goals().filter(function(g){return g.id!==id}));missView()}
+ else if(a==="goalplan"){var g=goals().filter(function(z){return z.id===id})[0];if(g){setMode("proy");send("Quiero lograr esta meta: «"+g.title+"»"+(g.date?" para el "+g.date:"")+". Llevo "+g.prog+"% de avance. Ayúdame con un plan realista, paso a paso, y dime el siguiente paso para hoy.")}}
+ else if(a==="savename"){SET("uname",$("#un").value.trim());toast("Nombre guardado")}
+ else if(a==="savelikes"){SET("likes",$("#lk").value.trim());toast("Gustos guardados")}
+ else if(a==="savekey"){SET("gkey",$("#key").value.trim());header();setView();toast("Llave guardada")}
+ else if(a==="savemodel"){var sv=$("#msel").value;var val=sv==="custom"?$("#mc").value.trim():sv;SET("model",val||DEFMODEL);toast("Modelo guardado")}
+ else if(a==="toggleweb"){SET("web",!S("web",true));setView()}
+ else if(a==="toggleauto"){SET("autospeak",!S("autospeak",false));setView()}
+ else if(a==="clearchat"){SET("chat",[]);err="";toast("Chat borrado")}
+ else if(a==="clearmem"){SET("mem",[]);toast("Diario borrado")}
+ else if(a==="cleargoals"){SET("goals",[]);toast("Metas borradas")}
+});
+document.addEventListener("input",function(e){
+ if(e.target.className==="rg"){
+  var id=e.target.getAttribute("data-id"),v=+e.target.value,g=goals();
+  g.forEach(function(z){if(z.id===id)z.prog=v});SET("goals",g);
+  var bar=document.getElementById("gb_"+id),tx=document.getElementById("gp_"+id);
+  if(bar)bar.style.width=v+"%";if(tx)tx.textContent="Avance: "+v+"%"}
+});
+document.addEventListener("change",function(e){
+ if(e.target.id==="msel"){var c=$("#mc");if(c)c.style.display=e.target.value==="custom"?"block":"none"}
+});
+document.addEventListener("keydown",function(e){
+ if(e.key!=="Enter"||e.shiftKey)return;
+ if(e.target.id==="in"){e.preventDefault();var t=e.target;if(t.value.trim()){var x=t.value;t.value="";send(x)}}
+ else if(e.target.id==="ni"){e.preventDefault();var n=e.target.value.trim();if(n){addMem(n);memView()}}
+});
+setInterval(tick,1000);
+go("home");
+</script>
+</body>
+</html>

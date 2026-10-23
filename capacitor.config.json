@@ -1,0 +1,15 @@
+{
+  "appId": "com.sadiesink.ai",
+  "appName": "Sadie Sink",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2200,
+      "backgroundColor": "#070403",
+      "showSpinner": false
+    }
+  }
+}
